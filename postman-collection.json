@@ -1,0 +1,324 @@
+{
+  "info": {
+    "_postman_id": "b5e7f8a1-d6c3-4e5a-9f8d-3e2a1c4b5d6e",
+    "name": "SmartBloks HTML Processing API",
+    "description": "# SmartBloks HTML Processing API\n\nThis API processes HTML webpages and modifies their content using Artificial Intelligence (AI). It can rewrite text content to align with a site name and keywords, generate or modify images based on the context, and return the modified HTML content with updated text and image links.\n\n## Key Features\n\n- **Concise Text Rewriting**: The API rewrites text to be more concise and direct, reducing wordiness by 30-40%.\n- **Smart Image Handling**: Generates new images or falls back to original images when API limits are reached.\n- **Robust Error Handling**: Provides clear feedback and suggestions when issues occur.\n\n## Authentication\n\nNo authentication is required for this API. However, you need to have valid API keys for Anthropic Claude and OpenAI DALL-E configured on the server.\n\n## Rate Limiting\n\nThere are no rate limits implemented on the API itself, but the underlying AI services (Anthropic and OpenAI) have their own rate limits and usage quotas.\n\n## Error Handling\n\nThe API returns standard HTTP status codes:\n- 200: Success (may include warnings for partial success)\n- 400: Bad Request (invalid input)\n- 500: Server Error (processing error)\n\nError responses include a message field with details about the error and suggestions for resolution.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        },
+        "description": "Check if the API is up and running. This endpoint returns a simple status message to confirm the API is operational."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"OK\",\n    \"message\": \"API is healthy\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Process HTML Content",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"htmlContent\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to Our Website</h1>\\n    <p>This is a sample paragraph that will be rewritten by AI to be more concise and direct, aligned with the site name and keywords.</p>\\n    <img src=\\\"https://via.placeholder.com/300x200\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"siteName\": \"TechInnovate Solutions\",\n    \"keywords\": [\"artificial intelligence\", \"machine learning\", \"digital transformation\"]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/html/process",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "html", "process"]
+        },
+        "description": "## Process HTML Content\n\nThis endpoint processes HTML content using AI to rewrite text and generate/modify images based on the provided site name and keywords.\n\n### Request Body Parameters\n\n| Parameter | Type | Required | Description |\n|-----------|------|----------|-------------|\n| htmlContent | string | Yes | The HTML content to be processed. This should be a valid HTML string. Maximum size: 1MB. |\n| siteName | string | Yes | The name of the website. This will be used to align the content with the site's purpose. |\n| keywords | array of strings | Yes | A list of keywords relevant to the website. These will be incorporated into the rewritten text and used for image generation. |\n\n### Processing Details\n\n- **Text Processing**: The API uses Anthropic's Claude API to rewrite text content to be more concise (30-40% reduction in wordiness) while aligning with the site name and keywords.\n- **Image Processing**: The API uses OpenAI's DALL-E API to generate new images or falls back to original images when API limits are reached.\n\n### Response\n\nThe response includes the modified HTML content with updated text and image links, along with statistics about the processing and any warnings if some elements couldn't be processed."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"htmlContent\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to Our Website</h1>\\n    <p>This is a sample paragraph that will be rewritten by AI.</p>\\n    <img src=\\\"https://via.placeholder.com/300x200\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"siteName\": \"TechInnovate Solutions\",\n    \"keywords\": [\"artificial intelligence\", \"machine learning\", \"digital transformation\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/html/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "html", "process"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"success\": true,\n    \"modifiedHtml\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to TechInnovate Solutions</h1>\\n    <p>Discover how our AI and machine learning solutions drive digital transformation.</p>\\n    <img src=\\\"https://oaidalleapiprodscus.blob.core.windows.net/private/org-example/image-generated.png\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"stats\": {\n        \"textElementsModified\": 2,\n        \"imagesModified\": 1,\n        \"processingTimeMs\": 3248\n    }\n}"
+        },
+        {
+          "name": "Success Response with Warnings",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"htmlContent\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to Our Website</h1>\\n    <p>This is a sample paragraph that will be rewritten by AI.</p>\\n    <img src=\\\"https://via.placeholder.com/300x200\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"siteName\": \"TechInnovate Solutions\",\n    \"keywords\": [\"artificial intelligence\", \"machine learning\", \"digital transformation\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/html/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "html", "process"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"success\": true,\n    \"modifiedHtml\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to TechInnovate Solutions</h1>\\n    <p>Discover how our AI and machine learning solutions drive digital transformation.</p>\\n    <img src=\\\"https://via.placeholder.com/300x200\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"stats\": {\n        \"textElementsModified\": 2,\n        \"imagesModified\": 0,\n        \"processingTimeMs\": 2145\n    },\n    \"warnings\": [\n        \"Some elements could not be processed. This may be due to API limits or service issues.\",\n        \"Check the stats to see which elements were modified.\"\n    ]\n}"
+        },
+        {
+          "name": "Error Response - Missing Required Fields",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"htmlContent\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to Our Website</h1>\\n    <p>This is a sample paragraph that will be rewritten by AI.</p>\\n    <img src=\\\"https://via.placeholder.com/300x200\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"siteName\": \"TechInnovate Solutions\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/html/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "html", "process"]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"success\": false,\n    \"message\": \"Keywords array is required and must not be empty\"\n}"
+        },
+        {
+          "name": "Error Response - Content Too Large",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"htmlContent\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <!-- Very large HTML content over 1MB -->\n</body>\\n</html>\",\n    \"siteName\": \"TechInnovate Solutions\",\n    \"keywords\": [\"artificial intelligence\", \"machine learning\", \"digital transformation\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/html/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "html", "process"]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"success\": false,\n    \"message\": \"HTML content is too large. Please limit to 1MB or less.\"\n}"
+        },
+        {
+          "name": "Error Response - Processing Error",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"htmlContent\": \"<!DOCTYPE html>\\n<html>\\n<head>\\n    <title>Example Website</title>\\n</head>\\n<body>\\n    <h1>Welcome to Our Website</h1>\\n    <p>This is a sample paragraph that will be rewritten by AI.</p>\\n    <img src=\\\"https://via.placeholder.com/300x200\\\" alt=\\\"Sample Image\\\">\\n</body>\\n</html>\",\n    \"siteName\": \"TechInnovate Solutions\",\n    \"keywords\": [\"artificial intelligence\", \"machine learning\", \"digital transformation\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/html/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "html", "process"]
+            }
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"success\": false,\n    \"message\": \"AI service usage limits reached\",\n    \"error\": \"Billing hard limit has been reached\",\n    \"suggestion\": \"You may want to try again with fewer elements or check your API configuration.\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Root Endpoint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        },
+        "description": "The root endpoint provides basic information about the API, including available endpoints."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"message\": \"Welcome to SmartBloks HTML Processing API\",\n    \"status\": \"Server is up and running\",\n    \"docs\": \"/api/docs\",\n    \"endpoints\": {\n        \"processHtml\": \"/api/html/process\"\n    }\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "The base URL for the API. Change this to match your deployment environment."
+    }
+  ]
+} 
