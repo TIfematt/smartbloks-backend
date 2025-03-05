@@ -9,7 +9,6 @@ export const exampleController = {
    */
   getAll: async (req: Request, res: Response): Promise<void> => {
     try {
-      // Example data - in a real app, this would come from a database
       const items = [
         { id: 1, name: 'Item 1', description: 'Description for item 1' },
         { id: 2, name: 'Item 2', description: 'Description for item 2' },
@@ -36,7 +35,6 @@ export const exampleController = {
     try {
       const id = parseInt(req.params.id);
       
-      // Example data - in a real app, this would come from a database
       const item = { id, name: `Item ${id}`, description: `Description for item ${id}` };
       
       res.status(200).json({
@@ -68,7 +66,6 @@ export const exampleController = {
         return;
       }
       
-      // Example response - in a real app, this would be saved to a database
       const newItem = {
         id: Math.floor(Math.random() * 1000),
         name,

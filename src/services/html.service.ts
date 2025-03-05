@@ -94,7 +94,11 @@ export const processHtml = async (
     });
 
     // Extract page context for images
-    const pageContext = extractPageContext(document, request.siteName, request.keywords);
+    const pageContext = extractPageContext(
+      document,
+      request.siteName,
+      request.keywords
+    );
 
     // Process images in parallel
     const imagePromises = Array.from(images).map(async (img) => {
@@ -179,7 +183,11 @@ export const processHtml = async (
 /**
  * Extract context from the page for image generation
  */
-function extractPageContext(document: Document, siteName: string, keywords: string[]): string {
+function extractPageContext(
+  document: Document,
+  siteName: string,
+  keywords: string[]
+): string {
   let context = "";
 
   // Get the page title
@@ -195,7 +203,9 @@ function extractPageContext(document: Document, siteName: string, keywords: stri
   }
 
   // Get meta description
-  const metaDescription = document.querySelector("meta[name='description']")?.getAttribute("content");
+  const metaDescription = document
+    .querySelector("meta[name='description']")
+    ?.getAttribute("content");
   if (metaDescription) {
     context += metaDescription + ". ";
   }
@@ -215,7 +225,9 @@ function extractImageContext(img: Element): string {
   let context = "";
 
   // Check for caption
-  const figcaption = img.closest("figure")?.querySelector("figcaption")?.textContent;
+  const figcaption = img
+    .closest("figure")
+    ?.querySelector("figcaption")?.textContent;
   if (figcaption) {
     context += figcaption + ". ";
   }
@@ -240,7 +252,9 @@ function extractImageContext(img: Element): string {
 
       // If no heading found among siblings, check if the parent itself is a section with a heading
       if (!heading && currentElement.tagName.toLowerCase() === "section") {
-        const sectionHeading = currentElement.querySelector("h1, h2, h3, h4, h5, h6");
+        const sectionHeading = currentElement.querySelector(
+          "h1, h2, h3, h4, h5, h6"
+        );
         if (sectionHeading) {
           heading = sectionHeading;
         }
@@ -256,9 +270,10 @@ function extractImageContext(img: Element): string {
   const nearbyParagraph = img.closest("div")?.querySelector("p")?.textContent;
   if (nearbyParagraph) {
     // Limit paragraph length to avoid too much context
-    const limitedText = nearbyParagraph.length > 100
-      ? nearbyParagraph.substring(0, 100) + "..."
-      : nearbyParagraph;
+    const limitedText =
+      nearbyParagraph.length > 100
+        ? nearbyParagraph.substring(0, 100) + "..."
+        : nearbyParagraph;
     context += limitedText;
   }
 

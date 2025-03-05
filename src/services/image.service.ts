@@ -13,7 +13,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
 });
 
-// Define OpenAI error interface
+// OpenAI error interface
 interface OpenAIError {
   message?: string;
   error?: {
@@ -36,12 +36,12 @@ async function downloadAndSaveImage(imageUrl: string): Promise<string> {
     const publicDir = path.join(process.cwd(), "public", "images");
     const filePath = path.join(publicDir, filename);
 
-    // Ensure the directory exists
+    // Ensure directory exists
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir, { recursive: true });
     }
 
-    // Download the image
+    // Download image
     const response = await axios({
       method: "GET",
       url: imageUrl,
